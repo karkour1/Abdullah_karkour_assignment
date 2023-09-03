@@ -1,0 +1,49 @@
+the Symbols of main.o : 
+
+	00000000 T main
+
+the symbols have virtual addresses , it will be resolved by linker script .
+
+the Symbols of startup.o : 
+
+	         U _E_bss
+	         U _E_Data
+	         U _E_text
+	         U _S_bss
+	         U _S_Data
+	00000000 W Bus_Fault
+	00000000 T Default_Handler
+	00000000 D g_p_fn_vectores
+	00000000 W H_Fault_Handler
+	         U main
+	00000000 W MM_Fault_Handler
+	00000000 W NMI_Handler
+	0000000c T Rest_Handler
+	00000000 b stack_top
+	00000000 W Usage_Fault_Handler
+
+the symbols have virtual addresses , it will be resolved by linker script .
+
+the Symbols of Executable file :
+
+	20000400 B _E_bss
+	20000000 T _E_Data
+	00000138 T _E_text
+	20000000 B _S_bss
+	20000000 T _S_Data
+	000000a8 W Bus_Fault
+	000000a8 T Default_Handler
+	00000000 T g_p_fn_vectores
+	000000a8 W H_Fault_Handler
+	0000001c T main
+	000000a8 W MM_Fault_Handler
+	000000a8 W NMI_Handler
+	000000b4 T Rest_Handler
+	20000000 b stack_top
+	000000a8 W Usage_Fault_Handler
+
+the symbols have the phesical addresses , the Vectors Handler function take the address of Default handler till it have another defintion in source code . 
+
+
+
+
