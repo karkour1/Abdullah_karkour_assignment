@@ -155,3 +155,67 @@ void Linked_List_Delete_all_Nodes()
 
 
 }
+void Linked_List_Get_Node_with_index(uint32 index)
+{
+	uint32 count = 0;
+	// Temp Pointer to the nodes
+	struct SNode* pCurrentNode = PFirstNode ;
+
+	// if the List is empty
+	if(!pCurrentNode)
+	{
+		DPRINTF("\nEmpty List !");
+	}
+	else
+	{
+		// loop till the index number
+		while(pCurrentNode && (count <= index))
+		{
+			if(count == index)
+			{
+				DPRINTF("\nThe Node at index %d : " , index);
+				DPRINTF("\nID : %d", pCurrentNode->Node.ID);
+				DPRINTF("\nName : %s", pCurrentNode->Node.Name);
+				DPRINTF("\nHeight : %.2f", pCurrentNode->Node.height);
+				break;
+			}
+			else
+			{
+				pCurrentNode  = pCurrentNode->PNextSdudent;
+				count++;
+			}
+		}
+		// if index is not exist
+		if((count < index) || ((index == count && !pCurrentNode)))
+			DPRINTF("\nThe index is not valid");
+	}
+}
+int  Linked_List_Length(struct SNode* PHead)
+{
+	// use recursive function to loop and count the length
+	if (!PHead)
+		return 0;
+	return 1+ Linked_List_Length(PHead->PNextSdudent);
+}
+void Linked_List_Nth_Node_From_End(struct SNode* PHead ,uint32 Number)
+{
+	// Get the index of Node by (Length - Number )
+	Linked_List_Get_Node_with_index(Linked_List_Length(PHead) - Number) ;
+}
+void Linked_List_Middle_of_list(struct SNode* PHead)
+{
+
+	if(Linked_List_Length(PHead) %2)
+	{
+		// Get the index of Node in the middle if Length is odd
+		Linked_List_Get_Node_with_index(Linked_List_Length(PHead) /2) ;
+	}
+	else
+	{
+		// Get the index of Node in the middle if Length is even (two nodes in middle)
+		Linked_List_Get_Node_with_index((Linked_List_Length(PHead) /2)-1) ;
+		Linked_List_Get_Node_with_index(Linked_List_Length(PHead) /2) ;
+	}
+
+
+}

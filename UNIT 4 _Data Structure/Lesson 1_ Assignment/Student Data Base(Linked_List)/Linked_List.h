@@ -40,9 +40,10 @@ void Linked_List_Add_Node(); // Add new Node to List
 void Linked_List_Delete_Node(); // Delete Node from list
 void Linked_List_View_list(); // show all Nodes
 void Linked_List_Delete_all_Nodes(); // make list Empty
-
-
-
+void Linked_List_Get_Node_with_index(uint32 index); // get the Node at the index
+int  Linked_List_Length(struct SNode* PHead); // Length of List
+void Linked_List_Nth_Node_From_End(struct SNode* PHead ,uint32 Number); // get the Nth Node from the end of list
+void Linked_List_Middle_of_list(struct SNode* PHead); // find the node in the middle of List
 
 
 

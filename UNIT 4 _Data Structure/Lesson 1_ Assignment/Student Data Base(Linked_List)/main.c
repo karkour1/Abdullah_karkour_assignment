@@ -38,7 +38,27 @@ int main()
 		case 4:
 			Linked_List_Delete_all_Nodes();
 			break ;
+
 		case 5 :
+			// Get index of Node
+			DPRINTF("\nEnter the index : " );
+			gets(temp_text);
+			Linked_List_Get_Node_with_index(atoi(temp_text));
+			break;
+		case 6 :
+			DPRINTF("\nThe Length of List is : %d " , Linked_List_Length(PFirstNode));
+			break;
+		case 7 :
+			// Get number of Node from end
+			DPRINTF("\nEnter the number of Node From End : " );
+			gets(temp_text);
+			Linked_List_Nth_Node_From_End(PFirstNode, atoi(temp_text));
+			break;
+		case 8 :
+			DPRINTF("\nThe Nodes in the Middle is : ");
+			Linked_List_Middle_of_list(PFirstNode);
+			break;
+		case 9 :
 			return 0 ;
 		default :
 			DPRINTF("\n wrong option");
@@ -59,6 +79,10 @@ void Options()
 	DPRINTF("\n 2: Delete Student ");
 	DPRINTF("\n 3: View All Student ");
 	DPRINTF("\n 4: Delete All Student ");
-	DPRINTF("\n 5: Quit ");
+	DPRINTF("\n 5: Get Node with it's index : ");
+	DPRINTF("\n 6: Get Length of List  ");
+	DPRINTF("\n 7: Get Node from the End of list : ");
+	DPRINTF("\n 8: Get Node at the middle of List : ");
+	DPRINTF("\n 9: Quit ");
 	DPRINTF("\n Enter option Number : ")
 }
