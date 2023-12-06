@@ -1,0 +1,201 @@
+
+U7_Sec1_task2.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000148  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .stab         000001bc  00000000  00000000  0000019c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  2 .stabstr      00000243  00000000  00000000  00000358  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d4 e0       	ldi	r29, 0x04	; 4
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 67 00 	call	0xce	; 0xce <main>
+  64:	0c 94 a2 00 	jmp	0x144	; 0x144 <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <GPIO_init>:
+#define PORTD  (*(volatile unsigned char*)0x32)
+#define PIND  (*(volatile unsigned char*)0x30)
+
+
+void GPIO_init()
+{
+  6c:	df 93       	push	r29
+  6e:	cf 93       	push	r28
+  70:	cd b7       	in	r28, 0x3d	; 61
+  72:	de b7       	in	r29, 0x3e	; 62
+	// set direction of PD pins output
+	SET_BIT(DDRD , 5);
+  74:	a1 e3       	ldi	r26, 0x31	; 49
+  76:	b0 e0       	ldi	r27, 0x00	; 0
+  78:	e1 e3       	ldi	r30, 0x31	; 49
+  7a:	f0 e0       	ldi	r31, 0x00	; 0
+  7c:	80 81       	ld	r24, Z
+  7e:	80 62       	ori	r24, 0x20	; 32
+  80:	8c 93       	st	X, r24
+	SET_BIT(DDRD , 6);
+  82:	a1 e3       	ldi	r26, 0x31	; 49
+  84:	b0 e0       	ldi	r27, 0x00	; 0
+  86:	e1 e3       	ldi	r30, 0x31	; 49
+  88:	f0 e0       	ldi	r31, 0x00	; 0
+  8a:	80 81       	ld	r24, Z
+  8c:	80 64       	ori	r24, 0x40	; 64
+  8e:	8c 93       	st	X, r24
+	SET_BIT(DDRD , 7);
+  90:	a1 e3       	ldi	r26, 0x31	; 49
+  92:	b0 e0       	ldi	r27, 0x00	; 0
+  94:	e1 e3       	ldi	r30, 0x31	; 49
+  96:	f0 e0       	ldi	r31, 0x00	; 0
+  98:	80 81       	ld	r24, Z
+  9a:	80 68       	ori	r24, 0x80	; 128
+  9c:	8c 93       	st	X, r24
+
+	// set pin0 PB input
+	CLEAR_BIT(DDRD , 0);
+  9e:	a1 e3       	ldi	r26, 0x31	; 49
+  a0:	b0 e0       	ldi	r27, 0x00	; 0
+  a2:	e1 e3       	ldi	r30, 0x31	; 49
+  a4:	f0 e0       	ldi	r31, 0x00	; 0
+  a6:	80 81       	ld	r24, Z
+  a8:	8e 7f       	andi	r24, 0xFE	; 254
+  aa:	8c 93       	st	X, r24
+	CLEAR_BIT(DDRD , 1);
+  ac:	a1 e3       	ldi	r26, 0x31	; 49
+  ae:	b0 e0       	ldi	r27, 0x00	; 0
+  b0:	e1 e3       	ldi	r30, 0x31	; 49
+  b2:	f0 e0       	ldi	r31, 0x00	; 0
+  b4:	80 81       	ld	r24, Z
+  b6:	8d 7f       	andi	r24, 0xFD	; 253
+  b8:	8c 93       	st	X, r24
+	CLEAR_BIT(DDRD , 2);
+  ba:	a1 e3       	ldi	r26, 0x31	; 49
+  bc:	b0 e0       	ldi	r27, 0x00	; 0
+  be:	e1 e3       	ldi	r30, 0x31	; 49
+  c0:	f0 e0       	ldi	r31, 0x00	; 0
+  c2:	80 81       	ld	r24, Z
+  c4:	8b 7f       	andi	r24, 0xFB	; 251
+  c6:	8c 93       	st	X, r24
+
+}
+  c8:	cf 91       	pop	r28
+  ca:	df 91       	pop	r29
+  cc:	08 95       	ret
+
+000000ce <main>:
+
+int main()
+{
+  ce:	df 93       	push	r29
+  d0:	cf 93       	push	r28
+  d2:	cd b7       	in	r28, 0x3d	; 61
+  d4:	de b7       	in	r29, 0x3e	; 62
+	GPIO_init();
+  d6:	0e 94 36 00 	call	0x6c	; 0x6c <GPIO_init>
+	while(1)
+	{
+		// Pull_Down Button
+		if(READ_BIT(PIND , 0))
+  da:	e0 e3       	ldi	r30, 0x30	; 48
+  dc:	f0 e0       	ldi	r31, 0x00	; 0
+  de:	80 81       	ld	r24, Z
+  e0:	88 2f       	mov	r24, r24
+  e2:	90 e0       	ldi	r25, 0x00	; 0
+  e4:	81 70       	andi	r24, 0x01	; 1
+  e6:	90 70       	andi	r25, 0x00	; 0
+  e8:	88 23       	and	r24, r24
+  ea:	81 f0       	breq	.+32     	; 0x10c <main+0x3e>
+		{
+			SET_BIT(PORTD , 5);
+  ec:	a2 e3       	ldi	r26, 0x32	; 50
+  ee:	b0 e0       	ldi	r27, 0x00	; 0
+  f0:	e2 e3       	ldi	r30, 0x32	; 50
+  f2:	f0 e0       	ldi	r31, 0x00	; 0
+  f4:	80 81       	ld	r24, Z
+  f6:	80 62       	ori	r24, 0x20	; 32
+  f8:	8c 93       	st	X, r24
+			while(READ_BIT(PIND , 0));
+  fa:	e0 e3       	ldi	r30, 0x30	; 48
+  fc:	f0 e0       	ldi	r31, 0x00	; 0
+  fe:	80 81       	ld	r24, Z
+ 100:	88 2f       	mov	r24, r24
+ 102:	90 e0       	ldi	r25, 0x00	; 0
+ 104:	81 70       	andi	r24, 0x01	; 1
+ 106:	90 70       	andi	r25, 0x00	; 0
+ 108:	88 23       	and	r24, r24
+ 10a:	b9 f7       	brne	.-18     	; 0xfa <main+0x2c>
+		}
+
+		// Pull_up Button
+		if( ! READ_BIT(PIND , 1))
+ 10c:	e0 e3       	ldi	r30, 0x30	; 48
+ 10e:	f0 e0       	ldi	r31, 0x00	; 0
+ 110:	80 81       	ld	r24, Z
+ 112:	86 95       	lsr	r24
+ 114:	88 2f       	mov	r24, r24
+ 116:	90 e0       	ldi	r25, 0x00	; 0
+ 118:	81 70       	andi	r24, 0x01	; 1
+ 11a:	90 70       	andi	r25, 0x00	; 0
+ 11c:	00 97       	sbiw	r24, 0x00	; 0
+ 11e:	e9 f6       	brne	.-70     	; 0xda <main+0xc>
+		{
+			SET_BIT(PORTD , 6);
+ 120:	a2 e3       	ldi	r26, 0x32	; 50
+ 122:	b0 e0       	ldi	r27, 0x00	; 0
+ 124:	e2 e3       	ldi	r30, 0x32	; 50
+ 126:	f0 e0       	ldi	r31, 0x00	; 0
+ 128:	80 81       	ld	r24, Z
+ 12a:	80 64       	ori	r24, 0x40	; 64
+ 12c:	8c 93       	st	X, r24
+			while(! READ_BIT(PIND , 1));
+ 12e:	e0 e3       	ldi	r30, 0x30	; 48
+ 130:	f0 e0       	ldi	r31, 0x00	; 0
+ 132:	80 81       	ld	r24, Z
+ 134:	86 95       	lsr	r24
+ 136:	88 2f       	mov	r24, r24
+ 138:	90 e0       	ldi	r25, 0x00	; 0
+ 13a:	81 70       	andi	r24, 0x01	; 1
+ 13c:	90 70       	andi	r25, 0x00	; 0
+ 13e:	00 97       	sbiw	r24, 0x00	; 0
+ 140:	b1 f3       	breq	.-20     	; 0x12e <main+0x60>
+ 142:	cb cf       	rjmp	.-106    	; 0xda <main+0xc>
+
+00000144 <_exit>:
+ 144:	f8 94       	cli
+
+00000146 <__stop_program>:
+ 146:	ff cf       	rjmp	.-2      	; 0x146 <__stop_program>
