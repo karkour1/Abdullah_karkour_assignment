@@ -1,0 +1,7 @@
+"LCD_Driver/LCD_Programme.o"
+"Src/main.o"
+"Src/syscalls.o"
+"Src/sysmem.o"
+"Startup/startup_stm32f103c6tx.o"
+"Stm32f103x6_drivers/Stm32_F103C6_EXTI_driver.o"
+"Stm32f103x6_drivers/Stm32_F103C6_gpio_driver.o"
