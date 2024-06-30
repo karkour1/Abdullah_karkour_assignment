@@ -1,0 +1,603 @@
+
+Atmega_PWM_Driver.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000382  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000004  00800060  00800060  000003f6  2**0
+                  ALLOC
+  2 .stab         000008b8  00000000  00000000  000003f8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      00000afd  00000000  00000000  00000cb0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   8:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  10:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  14:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  18:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  1c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  20:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  24:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  28:	0c 94 2b 01 	jmp	0x256	; 0x256 <__vector_10>
+  2c:	0c 94 fe 00 	jmp	0x1fc	; 0x1fc <__vector_11>
+  30:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  34:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  38:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  3c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  40:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  44:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  48:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  4c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  50:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d4 e0       	ldi	r29, 0x04	; 4
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_clear_bss>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	01 c0       	rjmp	.+2      	; 0x6a <.do_clear_bss_start>
+
+00000068 <.do_clear_bss_loop>:
+  68:	1d 92       	st	X+, r1
+
+0000006a <.do_clear_bss_start>:
+  6a:	a4 36       	cpi	r26, 0x64	; 100
+  6c:	b1 07       	cpc	r27, r17
+  6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
+  70:	0e 94 8f 01 	call	0x31e	; 0x31e <main>
+  74:	0c 94 bf 01 	jmp	0x37e	; 0x37e <_exit>
+
+00000078 <__bad_interrupt>:
+  78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000007c <TIMER0_Init>:
+
+/******************************************************************************
+*								 APIS IMPLEMENTATION			              *
+*******************************************************************************/
+void TIMER0_Init(TIMER0_CONFIG_t* configuartion)
+{
+  7c:	df 93       	push	r29
+  7e:	cf 93       	push	r28
+  80:	00 d0       	rcall	.+0      	; 0x82 <TIMER0_Init+0x6>
+  82:	cd b7       	in	r28, 0x3d	; 61
+  84:	de b7       	in	r29, 0x3e	; 62
+  86:	9a 83       	std	Y+2, r25	; 0x02
+  88:	89 83       	std	Y+1, r24	; 0x01
+	if(configuartion != ((void*)0))
+  8a:	89 81       	ldd	r24, Y+1	; 0x01
+  8c:	9a 81       	ldd	r25, Y+2	; 0x02
+  8e:	00 97       	sbiw	r24, 0x00	; 0
+  90:	91 f1       	breq	.+100    	; 0xf6 <TIMER0_Init+0x7a>
+	{
+		// Set Timer Mode
+		TCCR0 |= configuartion->mode;
+  92:	a3 e5       	ldi	r26, 0x53	; 83
+  94:	b0 e0       	ldi	r27, 0x00	; 0
+  96:	e3 e5       	ldi	r30, 0x53	; 83
+  98:	f0 e0       	ldi	r31, 0x00	; 0
+  9a:	90 81       	ld	r25, Z
+  9c:	e9 81       	ldd	r30, Y+1	; 0x01
+  9e:	fa 81       	ldd	r31, Y+2	; 0x02
+  a0:	80 81       	ld	r24, Z
+  a2:	89 2b       	or	r24, r25
+  a4:	8c 93       	st	X, r24
+
+		// Set Compare Match Mode
+		TCCR0 |= configuartion->Com_mode ;
+  a6:	a3 e5       	ldi	r26, 0x53	; 83
+  a8:	b0 e0       	ldi	r27, 0x00	; 0
+  aa:	e3 e5       	ldi	r30, 0x53	; 83
+  ac:	f0 e0       	ldi	r31, 0x00	; 0
+  ae:	90 81       	ld	r25, Z
+  b0:	e9 81       	ldd	r30, Y+1	; 0x01
+  b2:	fa 81       	ldd	r31, Y+2	; 0x02
+  b4:	81 81       	ldd	r24, Z+1	; 0x01
+  b6:	89 2b       	or	r24, r25
+  b8:	8c 93       	st	X, r24
+
+		// Set Prescaler Of Timer Clock
+		TCCR0 |= configuartion->clk;
+  ba:	a3 e5       	ldi	r26, 0x53	; 83
+  bc:	b0 e0       	ldi	r27, 0x00	; 0
+  be:	e3 e5       	ldi	r30, 0x53	; 83
+  c0:	f0 e0       	ldi	r31, 0x00	; 0
+  c2:	90 81       	ld	r25, Z
+  c4:	e9 81       	ldd	r30, Y+1	; 0x01
+  c6:	fa 81       	ldd	r31, Y+2	; 0x02
+  c8:	84 81       	ldd	r24, Z+4	; 0x04
+  ca:	89 2b       	or	r24, r25
+  cc:	8c 93       	st	X, r24
+
+		// Set Interrupt of OVF
+		TIMSK |= configuartion->ovfInterrupt ;
+  ce:	a9 e5       	ldi	r26, 0x59	; 89
+  d0:	b0 e0       	ldi	r27, 0x00	; 0
+  d2:	e9 e5       	ldi	r30, 0x59	; 89
+  d4:	f0 e0       	ldi	r31, 0x00	; 0
+  d6:	90 81       	ld	r25, Z
+  d8:	e9 81       	ldd	r30, Y+1	; 0x01
+  da:	fa 81       	ldd	r31, Y+2	; 0x02
+  dc:	83 81       	ldd	r24, Z+3	; 0x03
+  de:	89 2b       	or	r24, r25
+  e0:	8c 93       	st	X, r24
+
+		// Set Interrupt of Compare Match
+		TIMSK |= configuartion->ocmInterrupt ;
+  e2:	a9 e5       	ldi	r26, 0x59	; 89
+  e4:	b0 e0       	ldi	r27, 0x00	; 0
+  e6:	e9 e5       	ldi	r30, 0x59	; 89
+  e8:	f0 e0       	ldi	r31, 0x00	; 0
+  ea:	90 81       	ld	r25, Z
+  ec:	e9 81       	ldd	r30, Y+1	; 0x01
+  ee:	fa 81       	ldd	r31, Y+2	; 0x02
+  f0:	82 81       	ldd	r24, Z+2	; 0x02
+  f2:	89 2b       	or	r24, r25
+  f4:	8c 93       	st	X, r24
+	}
+}
+  f6:	0f 90       	pop	r0
+  f8:	0f 90       	pop	r0
+  fa:	cf 91       	pop	r28
+  fc:	df 91       	pop	r29
+  fe:	08 95       	ret
+
+00000100 <TIMER0_Stop>:
+void TIMER0_Stop()
+{
+ 100:	df 93       	push	r29
+ 102:	cf 93       	push	r28
+ 104:	cd b7       	in	r28, 0x3d	; 61
+ 106:	de b7       	in	r29, 0x3e	; 62
+	// Set No Clock for timer
+	TCCR0 |= NO_CLK_SRC ;
+ 108:	a3 e5       	ldi	r26, 0x53	; 83
+ 10a:	b0 e0       	ldi	r27, 0x00	; 0
+ 10c:	e3 e5       	ldi	r30, 0x53	; 83
+ 10e:	f0 e0       	ldi	r31, 0x00	; 0
+ 110:	80 81       	ld	r24, Z
+ 112:	8c 93       	st	X, r24
+
+	// Disable the Compare match and OVF interrupt
+	TIMSK &= ~(OCIE_ENABLE | TOIE_ENABLE);
+ 114:	a9 e5       	ldi	r26, 0x59	; 89
+ 116:	b0 e0       	ldi	r27, 0x00	; 0
+ 118:	e9 e5       	ldi	r30, 0x59	; 89
+ 11a:	f0 e0       	ldi	r31, 0x00	; 0
+ 11c:	80 81       	ld	r24, Z
+ 11e:	8c 7f       	andi	r24, 0xFC	; 252
+ 120:	8c 93       	st	X, r24
+
+	// Reset the Timer registers
+	TCCR0 = 0 ;
+ 122:	e3 e5       	ldi	r30, 0x53	; 83
+ 124:	f0 e0       	ldi	r31, 0x00	; 0
+ 126:	10 82       	st	Z, r1
+	TIMSK = 0 ;
+ 128:	e9 e5       	ldi	r30, 0x59	; 89
+ 12a:	f0 e0       	ldi	r31, 0x00	; 0
+ 12c:	10 82       	st	Z, r1
+}
+ 12e:	cf 91       	pop	r28
+ 130:	df 91       	pop	r29
+ 132:	08 95       	ret
+
+00000134 <TIMER0_GetCompareValue>:
+
+void TIMER0_GetCompareValue(uint8_t* TicksNumber)
+{
+ 134:	df 93       	push	r29
+ 136:	cf 93       	push	r28
+ 138:	00 d0       	rcall	.+0      	; 0x13a <TIMER0_GetCompareValue+0x6>
+ 13a:	cd b7       	in	r28, 0x3d	; 61
+ 13c:	de b7       	in	r29, 0x3e	; 62
+ 13e:	9a 83       	std	Y+2, r25	; 0x02
+ 140:	89 83       	std	Y+1, r24	; 0x01
+	*TicksNumber = OCR0 ;
+ 142:	ec e5       	ldi	r30, 0x5C	; 92
+ 144:	f0 e0       	ldi	r31, 0x00	; 0
+ 146:	80 81       	ld	r24, Z
+ 148:	e9 81       	ldd	r30, Y+1	; 0x01
+ 14a:	fa 81       	ldd	r31, Y+2	; 0x02
+ 14c:	80 83       	st	Z, r24
+}
+ 14e:	0f 90       	pop	r0
+ 150:	0f 90       	pop	r0
+ 152:	cf 91       	pop	r28
+ 154:	df 91       	pop	r29
+ 156:	08 95       	ret
+
+00000158 <TIMER0_SetCompareValue>:
+void TIMER0_SetCompareValue(uint8_t TicksNumber)
+{
+ 158:	df 93       	push	r29
+ 15a:	cf 93       	push	r28
+ 15c:	0f 92       	push	r0
+ 15e:	cd b7       	in	r28, 0x3d	; 61
+ 160:	de b7       	in	r29, 0x3e	; 62
+ 162:	89 83       	std	Y+1, r24	; 0x01
+	OCR0 = TicksNumber ;
+ 164:	ec e5       	ldi	r30, 0x5C	; 92
+ 166:	f0 e0       	ldi	r31, 0x00	; 0
+ 168:	89 81       	ldd	r24, Y+1	; 0x01
+ 16a:	80 83       	st	Z, r24
+}
+ 16c:	0f 90       	pop	r0
+ 16e:	cf 91       	pop	r28
+ 170:	df 91       	pop	r29
+ 172:	08 95       	ret
+
+00000174 <TIMER0_GetCounterValue>:
+
+void TIMER0_GetCounterValue(uint8_t* TicksNumber)
+{
+ 174:	df 93       	push	r29
+ 176:	cf 93       	push	r28
+ 178:	00 d0       	rcall	.+0      	; 0x17a <TIMER0_GetCounterValue+0x6>
+ 17a:	cd b7       	in	r28, 0x3d	; 61
+ 17c:	de b7       	in	r29, 0x3e	; 62
+ 17e:	9a 83       	std	Y+2, r25	; 0x02
+ 180:	89 83       	std	Y+1, r24	; 0x01
+	*TicksNumber = TCNT0 ;
+ 182:	e2 e5       	ldi	r30, 0x52	; 82
+ 184:	f0 e0       	ldi	r31, 0x00	; 0
+ 186:	80 81       	ld	r24, Z
+ 188:	e9 81       	ldd	r30, Y+1	; 0x01
+ 18a:	fa 81       	ldd	r31, Y+2	; 0x02
+ 18c:	80 83       	st	Z, r24
+}
+ 18e:	0f 90       	pop	r0
+ 190:	0f 90       	pop	r0
+ 192:	cf 91       	pop	r28
+ 194:	df 91       	pop	r29
+ 196:	08 95       	ret
+
+00000198 <TIMER0_SetCounterValue>:
+void TIMER0_SetCounterValue(uint8_t TicksNumber)
+{
+ 198:	df 93       	push	r29
+ 19a:	cf 93       	push	r28
+ 19c:	0f 92       	push	r0
+ 19e:	cd b7       	in	r28, 0x3d	; 61
+ 1a0:	de b7       	in	r29, 0x3e	; 62
+ 1a2:	89 83       	std	Y+1, r24	; 0x01
+	TCNT0 = TicksNumber ;
+ 1a4:	e2 e5       	ldi	r30, 0x52	; 82
+ 1a6:	f0 e0       	ldi	r31, 0x00	; 0
+ 1a8:	89 81       	ldd	r24, Y+1	; 0x01
+ 1aa:	80 83       	st	Z, r24
+}
+ 1ac:	0f 90       	pop	r0
+ 1ae:	cf 91       	pop	r28
+ 1b0:	df 91       	pop	r29
+ 1b2:	08 95       	ret
+
+000001b4 <TIMER0_CALLBACK_Overflow_INTERRUPT>:
+
+
+void TIMER0_CALLBACK_Overflow_INTERRUPT(PTR_VoidFuncVoid_t callback)
+{
+ 1b4:	df 93       	push	r29
+ 1b6:	cf 93       	push	r28
+ 1b8:	00 d0       	rcall	.+0      	; 0x1ba <TIMER0_CALLBACK_Overflow_INTERRUPT+0x6>
+ 1ba:	cd b7       	in	r28, 0x3d	; 61
+ 1bc:	de b7       	in	r29, 0x3e	; 62
+ 1be:	9a 83       	std	Y+2, r25	; 0x02
+ 1c0:	89 83       	std	Y+1, r24	; 0x01
+	CALLBACK_OVF = callback;
+ 1c2:	89 81       	ldd	r24, Y+1	; 0x01
+ 1c4:	9a 81       	ldd	r25, Y+2	; 0x02
+ 1c6:	90 93 63 00 	sts	0x0063, r25
+ 1ca:	80 93 62 00 	sts	0x0062, r24
+}
+ 1ce:	0f 90       	pop	r0
+ 1d0:	0f 90       	pop	r0
+ 1d2:	cf 91       	pop	r28
+ 1d4:	df 91       	pop	r29
+ 1d6:	08 95       	ret
+
+000001d8 <TIMER0_CALLBACK_CompareMatch_INTERRUPT>:
+void TIMER0_CALLBACK_CompareMatch_INTERRUPT(PTR_VoidFuncVoid_t callback)
+{
+ 1d8:	df 93       	push	r29
+ 1da:	cf 93       	push	r28
+ 1dc:	00 d0       	rcall	.+0      	; 0x1de <TIMER0_CALLBACK_CompareMatch_INTERRUPT+0x6>
+ 1de:	cd b7       	in	r28, 0x3d	; 61
+ 1e0:	de b7       	in	r29, 0x3e	; 62
+ 1e2:	9a 83       	std	Y+2, r25	; 0x02
+ 1e4:	89 83       	std	Y+1, r24	; 0x01
+	CALLBACK_CM = callback ;
+ 1e6:	89 81       	ldd	r24, Y+1	; 0x01
+ 1e8:	9a 81       	ldd	r25, Y+2	; 0x02
+ 1ea:	90 93 61 00 	sts	0x0061, r25
+ 1ee:	80 93 60 00 	sts	0x0060, r24
+}
+ 1f2:	0f 90       	pop	r0
+ 1f4:	0f 90       	pop	r0
+ 1f6:	cf 91       	pop	r28
+ 1f8:	df 91       	pop	r29
+ 1fa:	08 95       	ret
+
+000001fc <__vector_11>:
+// ISR FUNCTION PROTOTYPE FOR TIMER0 OVF
+
+void __vector_11 (void) __attribute__ (( signal ));
+
+void __vector_11(void)
+{
+ 1fc:	1f 92       	push	r1
+ 1fe:	0f 92       	push	r0
+ 200:	0f b6       	in	r0, 0x3f	; 63
+ 202:	0f 92       	push	r0
+ 204:	11 24       	eor	r1, r1
+ 206:	2f 93       	push	r18
+ 208:	3f 93       	push	r19
+ 20a:	4f 93       	push	r20
+ 20c:	5f 93       	push	r21
+ 20e:	6f 93       	push	r22
+ 210:	7f 93       	push	r23
+ 212:	8f 93       	push	r24
+ 214:	9f 93       	push	r25
+ 216:	af 93       	push	r26
+ 218:	bf 93       	push	r27
+ 21a:	ef 93       	push	r30
+ 21c:	ff 93       	push	r31
+ 21e:	df 93       	push	r29
+ 220:	cf 93       	push	r28
+ 222:	cd b7       	in	r28, 0x3d	; 61
+ 224:	de b7       	in	r29, 0x3e	; 62
+//			TMR_timer0_ovf_CallBack () ;
+//		}
+//
+//	}
+
+	CALLBACK_OVF();
+ 226:	e0 91 62 00 	lds	r30, 0x0062
+ 22a:	f0 91 63 00 	lds	r31, 0x0063
+ 22e:	09 95       	icall
+}
+ 230:	cf 91       	pop	r28
+ 232:	df 91       	pop	r29
+ 234:	ff 91       	pop	r31
+ 236:	ef 91       	pop	r30
+ 238:	bf 91       	pop	r27
+ 23a:	af 91       	pop	r26
+ 23c:	9f 91       	pop	r25
+ 23e:	8f 91       	pop	r24
+ 240:	7f 91       	pop	r23
+ 242:	6f 91       	pop	r22
+ 244:	5f 91       	pop	r21
+ 246:	4f 91       	pop	r20
+ 248:	3f 91       	pop	r19
+ 24a:	2f 91       	pop	r18
+ 24c:	0f 90       	pop	r0
+ 24e:	0f be       	out	0x3f, r0	; 63
+ 250:	0f 90       	pop	r0
+ 252:	1f 90       	pop	r1
+ 254:	18 95       	reti
+
+00000256 <__vector_10>:
+
+void __vector_10 (void) __attribute__ (( signal ));
+
+void __vector_10(void)
+{
+ 256:	1f 92       	push	r1
+ 258:	0f 92       	push	r0
+ 25a:	0f b6       	in	r0, 0x3f	; 63
+ 25c:	0f 92       	push	r0
+ 25e:	11 24       	eor	r1, r1
+ 260:	2f 93       	push	r18
+ 262:	3f 93       	push	r19
+ 264:	4f 93       	push	r20
+ 266:	5f 93       	push	r21
+ 268:	6f 93       	push	r22
+ 26a:	7f 93       	push	r23
+ 26c:	8f 93       	push	r24
+ 26e:	9f 93       	push	r25
+ 270:	af 93       	push	r26
+ 272:	bf 93       	push	r27
+ 274:	ef 93       	push	r30
+ 276:	ff 93       	push	r31
+ 278:	df 93       	push	r29
+ 27a:	cf 93       	push	r28
+ 27c:	cd b7       	in	r28, 0x3d	; 61
+ 27e:	de b7       	in	r29, 0x3e	; 62
+//			TMR_timer0_CTC_CallBack () ;
+//		}
+//
+//	}
+
+	CALLBACK_CM();
+ 280:	e0 91 60 00 	lds	r30, 0x0060
+ 284:	f0 91 61 00 	lds	r31, 0x0061
+ 288:	09 95       	icall
+
+}
+ 28a:	cf 91       	pop	r28
+ 28c:	df 91       	pop	r29
+ 28e:	ff 91       	pop	r31
+ 290:	ef 91       	pop	r30
+ 292:	bf 91       	pop	r27
+ 294:	af 91       	pop	r26
+ 296:	9f 91       	pop	r25
+ 298:	8f 91       	pop	r24
+ 29a:	7f 91       	pop	r23
+ 29c:	6f 91       	pop	r22
+ 29e:	5f 91       	pop	r21
+ 2a0:	4f 91       	pop	r20
+ 2a2:	3f 91       	pop	r19
+ 2a4:	2f 91       	pop	r18
+ 2a6:	0f 90       	pop	r0
+ 2a8:	0f be       	out	0x3f, r0	; 63
+ 2aa:	0f 90       	pop	r0
+ 2ac:	1f 90       	pop	r1
+ 2ae:	18 95       	reti
+
+000002b0 <Generate_PWM>:
+
+/******************************************************************************
+*								 APIS IMPLEMENTATION			              *
+*******************************************************************************/
+void Generate_PWM(PWM_Frq_t frq , uint8_t  Duty_Cycle)
+{
+ 2b0:	df 93       	push	r29
+ 2b2:	cf 93       	push	r28
+ 2b4:	cd b7       	in	r28, 0x3d	; 61
+ 2b6:	de b7       	in	r29, 0x3e	; 62
+ 2b8:	28 97       	sbiw	r28, 0x08	; 8
+ 2ba:	0f b6       	in	r0, 0x3f	; 63
+ 2bc:	f8 94       	cli
+ 2be:	de bf       	out	0x3e, r29	; 62
+ 2c0:	0f be       	out	0x3f, r0	; 63
+ 2c2:	cd bf       	out	0x3d, r28	; 61
+ 2c4:	8f 83       	std	Y+7, r24	; 0x07
+ 2c6:	68 87       	std	Y+8, r22	; 0x08
+#endif
+
+#ifdef Phase_Correct_PWM_Mode
+
+	// SET TIMER0 IN PWM MODE
+	TIMER0_CONFIG_t confg ={ PWM_Phase_Correct ,Clear_OC0,OCIE_DISABLE,TOIE_DISABLE,frq};
+ 2c8:	80 e4       	ldi	r24, 0x40	; 64
+ 2ca:	8a 83       	std	Y+2, r24	; 0x02
+ 2cc:	80 e2       	ldi	r24, 0x20	; 32
+ 2ce:	8b 83       	std	Y+3, r24	; 0x03
+ 2d0:	1c 82       	std	Y+4, r1	; 0x04
+ 2d2:	1d 82       	std	Y+5, r1	; 0x05
+ 2d4:	8f 81       	ldd	r24, Y+7	; 0x07
+ 2d6:	8e 83       	std	Y+6, r24	; 0x06
+
+#endif
+
+	uint8_t TicksNumber;
+	TicksNumber = (Duty_Cycle * 256)/100 ;
+ 2d8:	88 85       	ldd	r24, Y+8	; 0x08
+ 2da:	88 2f       	mov	r24, r24
+ 2dc:	90 e0       	ldi	r25, 0x00	; 0
+ 2de:	98 2f       	mov	r25, r24
+ 2e0:	88 27       	eor	r24, r24
+ 2e2:	24 e6       	ldi	r18, 0x64	; 100
+ 2e4:	30 e0       	ldi	r19, 0x00	; 0
+ 2e6:	b9 01       	movw	r22, r18
+ 2e8:	0e 94 98 01 	call	0x330	; 0x330 <__divmodhi4>
+ 2ec:	cb 01       	movw	r24, r22
+ 2ee:	89 83       	std	Y+1, r24	; 0x01
+	TIMER0_SetCompareValue(TicksNumber);
+ 2f0:	89 81       	ldd	r24, Y+1	; 0x01
+ 2f2:	0e 94 ac 00 	call	0x158	; 0x158 <TIMER0_SetCompareValue>
+	TIMER0_Init(&confg);
+ 2f6:	ce 01       	movw	r24, r28
+ 2f8:	02 96       	adiw	r24, 0x02	; 2
+ 2fa:	0e 94 3e 00 	call	0x7c	; 0x7c <TIMER0_Init>
+
+	// Set the OC0 Pin Output
+	DDRB |= (1<<3);
+ 2fe:	a7 e3       	ldi	r26, 0x37	; 55
+ 300:	b0 e0       	ldi	r27, 0x00	; 0
+ 302:	e7 e3       	ldi	r30, 0x37	; 55
+ 304:	f0 e0       	ldi	r31, 0x00	; 0
+ 306:	80 81       	ld	r24, Z
+ 308:	88 60       	ori	r24, 0x08	; 8
+ 30a:	8c 93       	st	X, r24
+
+}
+ 30c:	28 96       	adiw	r28, 0x08	; 8
+ 30e:	0f b6       	in	r0, 0x3f	; 63
+ 310:	f8 94       	cli
+ 312:	de bf       	out	0x3e, r29	; 62
+ 314:	0f be       	out	0x3f, r0	; 63
+ 316:	cd bf       	out	0x3d, r28	; 61
+ 318:	cf 91       	pop	r28
+ 31a:	df 91       	pop	r29
+ 31c:	08 95       	ret
+
+0000031e <main>:
+
+#include "PWM_Interface.h"
+
+
+int main (void)
+{
+ 31e:	df 93       	push	r29
+ 320:	cf 93       	push	r28
+ 322:	cd b7       	in	r28, 0x3d	; 61
+ 324:	de b7       	in	r29, 0x3e	; 62
+	Generate_PWM(PWM_FRQ_15khz, 25);
+ 326:	81 e0       	ldi	r24, 0x01	; 1
+ 328:	69 e1       	ldi	r22, 0x19	; 25
+ 32a:	0e 94 58 01 	call	0x2b0	; 0x2b0 <Generate_PWM>
+ 32e:	ff cf       	rjmp	.-2      	; 0x32e <main+0x10>
+
+00000330 <__divmodhi4>:
+ 330:	97 fb       	bst	r25, 7
+ 332:	09 2e       	mov	r0, r25
+ 334:	07 26       	eor	r0, r23
+ 336:	0a d0       	rcall	.+20     	; 0x34c <__divmodhi4_neg1>
+ 338:	77 fd       	sbrc	r23, 7
+ 33a:	04 d0       	rcall	.+8      	; 0x344 <__divmodhi4_neg2>
+ 33c:	0c d0       	rcall	.+24     	; 0x356 <__udivmodhi4>
+ 33e:	06 d0       	rcall	.+12     	; 0x34c <__divmodhi4_neg1>
+ 340:	00 20       	and	r0, r0
+ 342:	1a f4       	brpl	.+6      	; 0x34a <__divmodhi4_exit>
+
+00000344 <__divmodhi4_neg2>:
+ 344:	70 95       	com	r23
+ 346:	61 95       	neg	r22
+ 348:	7f 4f       	sbci	r23, 0xFF	; 255
+
+0000034a <__divmodhi4_exit>:
+ 34a:	08 95       	ret
+
+0000034c <__divmodhi4_neg1>:
+ 34c:	f6 f7       	brtc	.-4      	; 0x34a <__divmodhi4_exit>
+ 34e:	90 95       	com	r25
+ 350:	81 95       	neg	r24
+ 352:	9f 4f       	sbci	r25, 0xFF	; 255
+ 354:	08 95       	ret
+
+00000356 <__udivmodhi4>:
+ 356:	aa 1b       	sub	r26, r26
+ 358:	bb 1b       	sub	r27, r27
+ 35a:	51 e1       	ldi	r21, 0x11	; 17
+ 35c:	07 c0       	rjmp	.+14     	; 0x36c <__udivmodhi4_ep>
+
+0000035e <__udivmodhi4_loop>:
+ 35e:	aa 1f       	adc	r26, r26
+ 360:	bb 1f       	adc	r27, r27
+ 362:	a6 17       	cp	r26, r22
+ 364:	b7 07       	cpc	r27, r23
+ 366:	10 f0       	brcs	.+4      	; 0x36c <__udivmodhi4_ep>
+ 368:	a6 1b       	sub	r26, r22
+ 36a:	b7 0b       	sbc	r27, r23
+
+0000036c <__udivmodhi4_ep>:
+ 36c:	88 1f       	adc	r24, r24
+ 36e:	99 1f       	adc	r25, r25
+ 370:	5a 95       	dec	r21
+ 372:	a9 f7       	brne	.-22     	; 0x35e <__udivmodhi4_loop>
+ 374:	80 95       	com	r24
+ 376:	90 95       	com	r25
+ 378:	bc 01       	movw	r22, r24
+ 37a:	cd 01       	movw	r24, r26
+ 37c:	08 95       	ret
+
+0000037e <_exit>:
+ 37e:	f8 94       	cli
+
+00000380 <__stop_program>:
+ 380:	ff cf       	rjmp	.-2      	; 0x380 <__stop_program>
