@@ -126,7 +126,7 @@ LOAD d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x382
+.text           0x00000000      0x3b6
  *(.vectors)
  .vectors       0x00000000       0x54 d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm16.o
                 0x00000000                __vectors
@@ -241,20 +241,23 @@ LOAD d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3
  .text.Generate_PWM
                 0x000002b0       0x6e ./PWM_Programme.o
                 0x000002b0                Generate_PWM
- .text.main     0x0000031e       0x12 ./main.o
-                0x0000031e                main
- .text.libgcc   0x00000330       0x26 d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
-                0x00000330                __divmodhi4
-                0x00000330                _div
- .text.libgcc   0x00000356        0x0 d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .text.libgcc   0x00000356        0x0 d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
- .text.libgcc   0x00000356       0x28 d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
-                0x00000356                __udivmodhi4
-                0x0000037e                . = ALIGN (0x2)
+ .text.Stop_PWM
+                0x0000031e       0x12 ./PWM_Programme.o
+                0x0000031e                Stop_PWM
+ .text.main     0x00000330       0x34 ./main.o
+                0x00000330                main
+ .text.libgcc   0x00000364       0x26 d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
+                0x00000364                __divmodhi4
+                0x00000364                _div
+ .text.libgcc   0x0000038a        0x0 d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text.libgcc   0x0000038a        0x0 d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .text.libgcc   0x0000038a       0x28 d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
+                0x0000038a                __udivmodhi4
+                0x000003b2                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000037e        0x0 d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
-                0x0000037e                exit
-                0x0000037e                _exit
+ .fini9         0x000003b2        0x0 d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x000003b2                exit
+                0x000003b2                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -273,11 +276,11 @@ LOAD d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000037e        0x4 d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .fini0         0x000003b2        0x4 d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000382                _etext = .
+                0x000003b6                _etext = .
 
-.data           0x00800060        0x0 load address 0x00000382
+.data           0x00800060        0x0 load address 0x000003b6
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800060        0x0 d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm16.o
@@ -313,8 +316,8 @@ LOAD d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3
                 0x00800060                CALLBACK_CM
                 0x00800062                CALLBACK_OVF
                 0x00800064                PROVIDE (__bss_end, .)
-                0x00000382                __data_load_start = LOADADDR (.data)
-                0x00000382                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000003b6                __data_load_start = LOADADDR (.data)
+                0x000003b6                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800064        0x0
                 0x00800064                PROVIDE (__noinit_start, .)
@@ -339,17 +342,17 @@ LOAD d:/es course/eclipes/tools/eclipse/winavr-20100110/bin/../lib/gcc/avr/4.3.3
 .signature
  *(.signature*)
 
-.stab           0x00000000      0x8b8
+.stab           0x00000000      0x930
  *(.stab)
  .stab          0x00000000      0x5b8 ./ATMEGA32_TIMER0_Programme.o
- .stab          0x000005b8      0x1d4 ./PWM_Programme.o
-                                0x3e4 (size before relaxing)
- .stab          0x0000078c      0x12c ./main.o
-                                0x360 (size before relaxing)
+ .stab          0x000005b8      0x204 ./PWM_Programme.o
+                                0x414 (size before relaxing)
+ .stab          0x000007bc      0x174 ./main.o
+                                0x3a8 (size before relaxing)
 
-.stabstr        0x00000000      0xafd
+.stabstr        0x00000000      0xb16
  *(.stabstr)
- .stabstr       0x00000000      0xafd ./ATMEGA32_TIMER0_Programme.o
+ .stabstr       0x00000000      0xb16 ./ATMEGA32_TIMER0_Programme.o
 
 .stab.excl
  *(.stab.excl)

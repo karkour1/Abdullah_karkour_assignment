@@ -3,13 +3,13 @@ Atmega_PWM_Driver.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000382  00000000  00000000  00000074  2**1
+  0 .text         000003b6  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .bss          00000004  00800060  00800060  000003f6  2**0
+  1 .bss          00000004  00800060  00800060  0000042a  2**0
                   ALLOC
-  2 .stab         000008b8  00000000  00000000  000003f8  2**2
+  2 .stab         00000930  00000000  00000000  0000042c  2**2
                   CONTENTS, READONLY, DEBUGGING
-  3 .stabstr      00000afd  00000000  00000000  00000cb0  2**0
+  3 .stabstr      00000b16  00000000  00000000  00000d5c  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -58,8 +58,8 @@ Disassembly of section .text:
   6a:	a4 36       	cpi	r26, 0x64	; 100
   6c:	b1 07       	cpc	r27, r17
   6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
-  70:	0e 94 8f 01 	call	0x31e	; 0x31e <main>
-  74:	0c 94 bf 01 	jmp	0x37e	; 0x37e <_exit>
+  70:	0e 94 98 01 	call	0x330	; 0x330 <main>
+  74:	0c 94 d9 01 	jmp	0x3b2	; 0x3b2 <_exit>
 
 00000078 <__bad_interrupt>:
   78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -494,7 +494,7 @@ void Generate_PWM(PWM_Frq_t frq , uint8_t  Duty_Cycle)
  2e2:	24 e6       	ldi	r18, 0x64	; 100
  2e4:	30 e0       	ldi	r19, 0x00	; 0
  2e6:	b9 01       	movw	r22, r18
- 2e8:	0e 94 98 01 	call	0x330	; 0x330 <__divmodhi4>
+ 2e8:	0e 94 b2 01 	call	0x364	; 0x364 <__divmodhi4>
  2ec:	cb 01       	movw	r24, r22
  2ee:	89 83       	std	Y+1, r24	; 0x01
 	TIMER0_SetCompareValue(TicksNumber);
@@ -526,78 +526,118 @@ void Generate_PWM(PWM_Frq_t frq , uint8_t  Duty_Cycle)
  31a:	df 91       	pop	r29
  31c:	08 95       	ret
 
-0000031e <main>:
+0000031e <Stop_PWM>:
+
+void Stop_PWM(void)
+{
+ 31e:	df 93       	push	r29
+ 320:	cf 93       	push	r28
+ 322:	cd b7       	in	r28, 0x3d	; 61
+ 324:	de b7       	in	r29, 0x3e	; 62
+	TIMER0_Stop();
+ 326:	0e 94 80 00 	call	0x100	; 0x100 <TIMER0_Stop>
+}
+ 32a:	cf 91       	pop	r28
+ 32c:	df 91       	pop	r29
+ 32e:	08 95       	ret
+
+00000330 <main>:
 
 #include "PWM_Interface.h"
 
 
 int main (void)
 {
- 31e:	df 93       	push	r29
- 320:	cf 93       	push	r28
- 322:	cd b7       	in	r28, 0x3d	; 61
- 324:	de b7       	in	r29, 0x3e	; 62
-	Generate_PWM(PWM_FRQ_15khz, 25);
- 326:	81 e0       	ldi	r24, 0x01	; 1
- 328:	69 e1       	ldi	r22, 0x19	; 25
- 32a:	0e 94 58 01 	call	0x2b0	; 0x2b0 <Generate_PWM>
- 32e:	ff cf       	rjmp	.-2      	; 0x32e <main+0x10>
+ 330:	df 93       	push	r29
+ 332:	cf 93       	push	r28
+ 334:	00 d0       	rcall	.+0      	; 0x336 <main+0x6>
+ 336:	cd b7       	in	r28, 0x3d	; 61
+ 338:	de b7       	in	r29, 0x3e	; 62
+	for(int i = 0 ; i<1000 ; i++)
+ 33a:	1a 82       	std	Y+2, r1	; 0x02
+ 33c:	19 82       	std	Y+1, r1	; 0x01
+ 33e:	09 c0       	rjmp	.+18     	; 0x352 <main+0x22>
+		Generate_PWM(PWM_FRQ_15khz, 25);
+ 340:	81 e0       	ldi	r24, 0x01	; 1
+ 342:	69 e1       	ldi	r22, 0x19	; 25
+ 344:	0e 94 58 01 	call	0x2b0	; 0x2b0 <Generate_PWM>
+#include "PWM_Interface.h"
 
-00000330 <__divmodhi4>:
- 330:	97 fb       	bst	r25, 7
- 332:	09 2e       	mov	r0, r25
- 334:	07 26       	eor	r0, r23
- 336:	0a d0       	rcall	.+20     	; 0x34c <__divmodhi4_neg1>
- 338:	77 fd       	sbrc	r23, 7
- 33a:	04 d0       	rcall	.+8      	; 0x344 <__divmodhi4_neg2>
- 33c:	0c d0       	rcall	.+24     	; 0x356 <__udivmodhi4>
- 33e:	06 d0       	rcall	.+12     	; 0x34c <__divmodhi4_neg1>
- 340:	00 20       	and	r0, r0
- 342:	1a f4       	brpl	.+6      	; 0x34a <__divmodhi4_exit>
 
-00000344 <__divmodhi4_neg2>:
- 344:	70 95       	com	r23
- 346:	61 95       	neg	r22
- 348:	7f 4f       	sbci	r23, 0xFF	; 255
+int main (void)
+{
+	for(int i = 0 ; i<1000 ; i++)
+ 348:	89 81       	ldd	r24, Y+1	; 0x01
+ 34a:	9a 81       	ldd	r25, Y+2	; 0x02
+ 34c:	01 96       	adiw	r24, 0x01	; 1
+ 34e:	9a 83       	std	Y+2, r25	; 0x02
+ 350:	89 83       	std	Y+1, r24	; 0x01
+ 352:	89 81       	ldd	r24, Y+1	; 0x01
+ 354:	9a 81       	ldd	r25, Y+2	; 0x02
+ 356:	23 e0       	ldi	r18, 0x03	; 3
+ 358:	88 3e       	cpi	r24, 0xE8	; 232
+ 35a:	92 07       	cpc	r25, r18
+ 35c:	8c f3       	brlt	.-30     	; 0x340 <main+0x10>
+		Generate_PWM(PWM_FRQ_15khz, 25);
+	Stop_PWM();
+ 35e:	0e 94 8f 01 	call	0x31e	; 0x31e <Stop_PWM>
+ 362:	ff cf       	rjmp	.-2      	; 0x362 <main+0x32>
 
-0000034a <__divmodhi4_exit>:
- 34a:	08 95       	ret
+00000364 <__divmodhi4>:
+ 364:	97 fb       	bst	r25, 7
+ 366:	09 2e       	mov	r0, r25
+ 368:	07 26       	eor	r0, r23
+ 36a:	0a d0       	rcall	.+20     	; 0x380 <__divmodhi4_neg1>
+ 36c:	77 fd       	sbrc	r23, 7
+ 36e:	04 d0       	rcall	.+8      	; 0x378 <__divmodhi4_neg2>
+ 370:	0c d0       	rcall	.+24     	; 0x38a <__udivmodhi4>
+ 372:	06 d0       	rcall	.+12     	; 0x380 <__divmodhi4_neg1>
+ 374:	00 20       	and	r0, r0
+ 376:	1a f4       	brpl	.+6      	; 0x37e <__divmodhi4_exit>
 
-0000034c <__divmodhi4_neg1>:
- 34c:	f6 f7       	brtc	.-4      	; 0x34a <__divmodhi4_exit>
- 34e:	90 95       	com	r25
- 350:	81 95       	neg	r24
- 352:	9f 4f       	sbci	r25, 0xFF	; 255
- 354:	08 95       	ret
+00000378 <__divmodhi4_neg2>:
+ 378:	70 95       	com	r23
+ 37a:	61 95       	neg	r22
+ 37c:	7f 4f       	sbci	r23, 0xFF	; 255
 
-00000356 <__udivmodhi4>:
- 356:	aa 1b       	sub	r26, r26
- 358:	bb 1b       	sub	r27, r27
- 35a:	51 e1       	ldi	r21, 0x11	; 17
- 35c:	07 c0       	rjmp	.+14     	; 0x36c <__udivmodhi4_ep>
+0000037e <__divmodhi4_exit>:
+ 37e:	08 95       	ret
 
-0000035e <__udivmodhi4_loop>:
- 35e:	aa 1f       	adc	r26, r26
- 360:	bb 1f       	adc	r27, r27
- 362:	a6 17       	cp	r26, r22
- 364:	b7 07       	cpc	r27, r23
- 366:	10 f0       	brcs	.+4      	; 0x36c <__udivmodhi4_ep>
- 368:	a6 1b       	sub	r26, r22
- 36a:	b7 0b       	sbc	r27, r23
+00000380 <__divmodhi4_neg1>:
+ 380:	f6 f7       	brtc	.-4      	; 0x37e <__divmodhi4_exit>
+ 382:	90 95       	com	r25
+ 384:	81 95       	neg	r24
+ 386:	9f 4f       	sbci	r25, 0xFF	; 255
+ 388:	08 95       	ret
 
-0000036c <__udivmodhi4_ep>:
- 36c:	88 1f       	adc	r24, r24
- 36e:	99 1f       	adc	r25, r25
- 370:	5a 95       	dec	r21
- 372:	a9 f7       	brne	.-22     	; 0x35e <__udivmodhi4_loop>
- 374:	80 95       	com	r24
- 376:	90 95       	com	r25
- 378:	bc 01       	movw	r22, r24
- 37a:	cd 01       	movw	r24, r26
- 37c:	08 95       	ret
+0000038a <__udivmodhi4>:
+ 38a:	aa 1b       	sub	r26, r26
+ 38c:	bb 1b       	sub	r27, r27
+ 38e:	51 e1       	ldi	r21, 0x11	; 17
+ 390:	07 c0       	rjmp	.+14     	; 0x3a0 <__udivmodhi4_ep>
 
-0000037e <_exit>:
- 37e:	f8 94       	cli
+00000392 <__udivmodhi4_loop>:
+ 392:	aa 1f       	adc	r26, r26
+ 394:	bb 1f       	adc	r27, r27
+ 396:	a6 17       	cp	r26, r22
+ 398:	b7 07       	cpc	r27, r23
+ 39a:	10 f0       	brcs	.+4      	; 0x3a0 <__udivmodhi4_ep>
+ 39c:	a6 1b       	sub	r26, r22
+ 39e:	b7 0b       	sbc	r27, r23
 
-00000380 <__stop_program>:
- 380:	ff cf       	rjmp	.-2      	; 0x380 <__stop_program>
+000003a0 <__udivmodhi4_ep>:
+ 3a0:	88 1f       	adc	r24, r24
+ 3a2:	99 1f       	adc	r25, r25
+ 3a4:	5a 95       	dec	r21
+ 3a6:	a9 f7       	brne	.-22     	; 0x392 <__udivmodhi4_loop>
+ 3a8:	80 95       	com	r24
+ 3aa:	90 95       	com	r25
+ 3ac:	bc 01       	movw	r22, r24
+ 3ae:	cd 01       	movw	r24, r26
+ 3b0:	08 95       	ret
+
+000003b2 <_exit>:
+ 3b2:	f8 94       	cli
+
+000003b4 <__stop_program>:
+ 3b4:	ff cf       	rjmp	.-2      	; 0x3b4 <__stop_program>

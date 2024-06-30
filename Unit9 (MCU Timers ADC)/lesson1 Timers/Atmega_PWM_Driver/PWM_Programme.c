@@ -38,3 +38,8 @@ void Generate_PWM(PWM_Frq_t frq , uint8_t  Duty_Cycle)
 	DDRB |= (1<<3);
 
 }
+
+void Stop_PWM(void)
+{
+	TIMER0_Stop();
+}

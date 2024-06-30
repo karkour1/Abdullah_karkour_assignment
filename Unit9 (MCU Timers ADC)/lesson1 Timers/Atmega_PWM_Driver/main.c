@@ -9,7 +9,9 @@
 
 int main (void)
 {
-	Generate_PWM(PWM_FRQ_15khz, 25);
+	for(int i = 0 ; i<1000 ; i++)
+		Generate_PWM(PWM_FRQ_15khz, 25);
+	Stop_PWM();
 	while(1)
 	{
 

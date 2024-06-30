@@ -48,5 +48,6 @@ typedef enum {
 *******************************************************************************/
 // Note Duty_Cycle is must set (1---> 100);
 void Generate_PWM(PWM_Frq_t frq , uint8_t  Duty_Cycle);
+void Stop_PWM(void);
 
 #endif /* PWM_INTERFACE_H_ */
